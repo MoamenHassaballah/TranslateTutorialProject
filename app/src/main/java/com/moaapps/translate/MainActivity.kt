@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.moaapps.translate.ui.theme.TranslateTheme
+import com.moaapps.translate.ui.views.MainView
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -22,9 +23,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TranslateTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding ->
-
-                }
+                MainView()
             }
         }
     }
