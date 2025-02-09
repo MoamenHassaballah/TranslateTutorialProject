@@ -2,6 +2,7 @@ package com.moaapps.translate.ui.views
 
 import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,15 +44,17 @@ import com.moaapps.translate.ui.theme.lightGray
 
 
 @Composable
-fun  MainView() {
+fun  MainView(onOpenDrawer: () -> Unit = {}) {
     Column {
-        TopBar()
+        TopBar {
+            onOpenDrawer()
+        }
         TranslationView()
     }
 }
 
 @Composable
-fun TopBar(){
+fun TopBar(onOpenDrawer: () -> Unit = {}){
 
     val devicePaddingValues = WindowInsets.systemBars.asPaddingValues()
 
@@ -88,7 +91,9 @@ fun TopBar(){
                 Icon(
                     painter = painterResource(id = R.drawable.ic_menu),
                     contentDescription = "drawer menu",
-                    Modifier.size(30.dp)
+                    Modifier.size(30.dp).clickable {
+                        onOpenDrawer()
+                    }
                 )
 
             }

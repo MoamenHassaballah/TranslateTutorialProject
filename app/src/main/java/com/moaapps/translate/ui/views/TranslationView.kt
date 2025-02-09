@@ -167,7 +167,20 @@ fun TranslationView(){
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(Color.White)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                lightGray,
+                                Color.White,
+                            )
+                        )
+                    )
+                    .background(
+                        Color.White,
+                        shape = RoundedCornerShape(
+                            topStart = 50.dp
+                        )
+                    )
                     .padding(20.dp)
             ){
 
