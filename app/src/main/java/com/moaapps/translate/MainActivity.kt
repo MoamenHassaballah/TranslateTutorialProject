@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     Scaffold(modifier = Modifier.fillMaxSize()) {
-                        MainView {
+                        MainView(selectedItem = selectedItem) {
                             coroutineScope.launch {
                                 drawerState.open()
                             }

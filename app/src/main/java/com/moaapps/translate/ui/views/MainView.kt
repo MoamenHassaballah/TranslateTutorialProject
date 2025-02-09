@@ -1,5 +1,6 @@
 package com.moaapps.translate.ui.views
 
+import android.util.Log
 import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -44,22 +51,65 @@ import com.moaapps.translate.ui.theme.lightGray
 
 
 @Composable
-fun  MainView(onOpenDrawer: () -> Unit = {}) {
+fun MainView(selectedItem: Int, onOpenDrawer: () -> Unit = {}) {
+
+    var title by remember {
+        mutableStateOf("Translate")
+    }
+
+    var icon by remember {
+        mutableIntStateOf(R.drawable.ic_t_letter)
+    }
+
+    LaunchedEffect(key1 = selectedItem) {
+        when (selectedItem){
+            0 -> {
+                title = "Translate"
+                icon = R.drawable.ic_t_letter
+            }
+            1 -> {
+                title = "Favourites"
+                icon = R.drawable.ic_star
+            }
+            2 -> {
+                title = "History"
+                icon = R.drawable.ic_history
+
+            }
+        }
+    }
+
     Column {
-        TopBar {
+        TopBar(
+            title = title,
+            icon = icon
+        ) {
             onOpenDrawer()
         }
-        TranslationView()
+
+        when (selectedItem){
+            0 -> {
+                TranslationView()
+            }
+            1 -> {
+                FavoritesPageView()
+            }
+            2 -> {
+                HistoryPageView()
+            }
+        }
+
     }
 }
 
 @Composable
-fun TopBar(onOpenDrawer: () -> Unit = {}){
+fun TopBar(title: String, icon: Int, onOpenDrawer: () -> Unit = {}){
 
     val devicePaddingValues = WindowInsets.systemBars.asPaddingValues()
 
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .background(lightGray)
             .height(100.dp + devicePaddingValues.calculateTopPadding())
 
@@ -91,9 +141,11 @@ fun TopBar(onOpenDrawer: () -> Unit = {}){
                 Icon(
                     painter = painterResource(id = R.drawable.ic_menu),
                     contentDescription = "drawer menu",
-                    Modifier.size(30.dp).clickable {
-                        onOpenDrawer()
-                    }
+                    Modifier
+                        .size(30.dp)
+                        .clickable {
+                            onOpenDrawer()
+                        }
                 )
 
             }
@@ -101,7 +153,7 @@ fun TopBar(onOpenDrawer: () -> Unit = {}){
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "Translate",
+                text = title,
                 color = Color.White,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
@@ -111,15 +163,17 @@ fun TopBar(onOpenDrawer: () -> Unit = {}){
         }
 
         Box (
-            modifier = Modifier.fillMaxWidth(0.85f)
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
                 .fillMaxHeight()
                 .padding(top = devicePaddingValues.calculateTopPadding())
         ){
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_t_letter),
+                painter = painterResource(id = icon),
                 contentDescription = "app icon",
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier
+                    .size(50.dp)
                     .shadow(10.dp)
                     .background(
                         Color.White,
@@ -140,7 +194,7 @@ fun TopBar(onOpenDrawer: () -> Unit = {}){
 @Composable
 fun MainViewPreview(){
     TranslateTheme {
-        MainView()
+        MainView(0)
     }
 }
 
